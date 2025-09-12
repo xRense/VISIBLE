@@ -210,11 +210,108 @@ UserInputService.InputChanged:Connect(function(input)
 	end
 end)
 
-local AutoReplay = false
-local AutoLeave = false
-local AutoNext = false
-local AutoFarm = false
-local AutoBanner = false
+
+
+
+-------------------------------------------------------------------------------------------------
+-- config
+local HttpService = game:GetService("HttpService")
+
+-- Проверяем доступность файловых функций
+if not (writefile and readfile and makefolder and isfolder and isfile) then
+	warn("Файловые функции не доступны!")
+	return
+end
+
+-- Создаем папки
+makefolder("KLConfig")
+makefolder("KLConfig/Config")
+
+-- Функция загрузки конфига
+local function loadConfig()
+	if isfile("KLConfig/Config/config.json") then
+		local success, configData = pcall(function()
+			return readfile("KLConfig/Config/config.json")
+		end)
+
+		if success then
+			local success2, decoded = pcall(function()
+				return HttpService:JSONDecode(configData)
+			end)
+
+			if success2 and decoded then
+				-- Загружаем значения в глобальные переменные
+				AutoReplay = decoded.AR or false
+				AutoNext = decoded.AN or false
+				AutoLeave = decoded.AL or false
+				AutoFarm = decoded.AF or false
+				AutoBanner = decoded.AB or false
+
+				print("Config loaded successful")
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Функция сохранения конфига
+local function saveConfig()
+	local config = {
+		AutoReplay = AutoReplay or false,
+		AutoNext = AutoNext or false, 
+		AutoLeave = AutoLeave or false,
+		AutoFarm = AutoFarm or false,
+		AutoBanner = AutoBanner or false
+	}
+
+	local success, error = pcall(function()
+		writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
+	end)
+
+	if success then
+		print("--------------------------------")
+		print("Saved config:")
+		print("AutoReplay - "..tostring(AutoReplay))
+		print("AutoNext - "..tostring(AutoNext))
+		print("AutoLeave - "..tostring(AutoLeave))
+		print("AutoBanner - "..tostring(AutoBanner))
+		print("AutoFarm - "..tostring(AutoFarm))
+		print("--------------------------------")
+		return true
+	else
+		warn("Ошибка сохранения:", error)
+		return false
+	end
+end
+
+-- Загружаем конфиг при старте
+loadConfig()
+
+-- Сохраняем при выходе из игры
+game:GetService("Players").PlayerRemoving:Connect(function(player)
+	if player == game.Players.LocalPlayer then
+		saveConfig()
+	end
+end)
+
+-- Кнопка сохранения
+local buttonconf = ScrollingFrame:FindFirstChild("a99SaveConfig"):FindFirstChild("a99SaveConfigButton")
+
+if buttonconf then
+	buttonconf.MouseButton1Click:Connect(function()
+		if saveConfig() then
+			buttonconf.Text = "Saved"
+			task.wait(2)
+			buttonconf.Text = "Save Config" -- или пустая строка
+		else
+			buttonconf.Text = "Error!"
+			task.wait(2)
+			buttonconf.Text = "Save Config"
+		end
+	end)
+end
+
 
 ------------------------------------------------------------------------------------
 -- functions
@@ -237,7 +334,7 @@ buttonR.MouseButton1Click:Connect(function()
 		buttonR.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
 		buttonR.TextColor3 = Color3.fromRGB(255, 255, 255)
 		AutoReplay = false
-		else
+	else
 		if AutoReplay == false then
 			buttonR.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
 			buttonR.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -364,103 +461,3 @@ buttonB.MouseButton1Click:Connect(function()
 		end
 	end
 end)
--------------------------------------------------------------------------------------------------
--- config
-local HttpService = game:GetService("HttpService")
-
--- Проверяем доступность файловых функций
-if not (writefile and readfile and makefolder and isfolder and isfile) then
-	warn("Файловые функции не доступны!")
-	return
-end
-
--- Создаем папки
-makefolder("KLConfig")
-makefolder("KLConfig/Config")
-
--- Функция загрузки конфига
-local function loadConfig()
-	if isfile("KLConfig/Config/config.json") then
-		local success, configData = pcall(function()
-			return readfile("KLConfig/Config/config.json")
-		end)
-
-		if success then
-			local success2, decoded = pcall(function()
-				return HttpService:JSONDecode(configData)
-			end)
-
-			if success2 and decoded then
-				-- Загружаем значения в глобальные переменные
-				AutoReplay = decoded.AR or false
-				AutoNext = decoded.AN or false
-				AutoLeave = decoded.AL or false
-				AutoFarm = decoded.AF or false
-				AutoBanner = decoded.AB or false
-
-				print("Config loaded successful")
-				return true
-			end
-		end
-	end
-	return false
-end
-
--- Функция сохранения конфига
-local function saveConfig()
-	local config = {
-		AR = AutoReplay or false,
-		AN = AutoNext or false, 
-		AL = AutoLeave or false,
-		AF = AutoFarm or false,
-		AB = AutoBanner or false
-	}
-
-	local success, error = pcall(function()
-		writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
-	end)
-
-	if success then
-		print("--------------------------------")
-		print("Saved config:")
-		print("AutoReplay - "..tostring(AutoReplay))
-		print("AutoNext - "..tostring(AutoNext))
-		print("AutoLeave - "..tostring(AutoLeave))
-		print("AutoBanner - "..tostring(AutoBanner))
-		print("AutoFarm - "..tostring(AutoFarm))
-		print("--------------------------------")
-		return true
-	else
-		warn("Ошибка сохранения:", error)
-		return false
-	end
-end
-
--- Загружаем конфиг при старте
-loadConfig()
-
--- Сохраняем при выходе из игры
-game:GetService("Players").PlayerRemoving:Connect(function(player)
-	if player == game.Players.LocalPlayer then
-		saveConfig()
-	end
-end)
-
--- Кнопка сохранения
-local buttonconf = ScrollingFrame:FindFirstChild("a99SaveConfig"):FindFirstChild("a99SaveConfigButton")
-
-if buttonconf then
-	buttonconf.MouseButton1Click:Connect(function()
-		if saveConfig() then
-			buttonconf.Text = "Saved"
-			task.wait(2)
-			buttonconf.Text = "Save Config" -- или пустая строка
-		else
-			buttonconf.Text = "Error!"
-			task.wait(2)
-			buttonconf.Text = "Save Config"
-		end
-	end)
-end
-
-------------------------------------------------------------------------------------
