@@ -379,12 +379,12 @@ local config = {
 
 
 }
---makefolder("KLConfig/Config")
---writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
+makefolder("KLConfig/Config")
+writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
 
 game:GetService("Players").PlayerRemoving:Connect(function(player)
 	if player == game.Players.LocalPlayer then
-		--writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
+		writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
 	end
 end)
 
@@ -392,7 +392,7 @@ local buttonconf = ScrollingFrame:FindFirstChild("a99SaveConfig"):FindFirstChild
 
 buttonconf.MouseButton1Click:Connect(function()
 
-	--writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
+	writefile("KLConfig/Config/config.json", HttpService:JSONEncode(config))
 	print("--------------------------------")
 	print("Saved config:")
 	print("AutoReplay - "..tostring(AutoReplay))
