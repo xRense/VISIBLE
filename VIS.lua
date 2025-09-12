@@ -44,9 +44,6 @@ function CloseButtons(Parent)
 	Button.TextSize = 10
 	Button.TextScaled = true
 
-	Button.MouseButton1Click:Connect(function()
-		ScreenGui:Destroy()
-	end)
 
 	local Button2 = Instance.new("TextButton")
 	Button2.Name = "HideButton"
@@ -398,16 +395,6 @@ end
 -- auto replay
 local buttonR = ScrollingFrame:FindFirstChild("a1AutoReplay"):FindFirstChild("a1AutoReplayButton")
 
-if AutoReplay == true then
-	buttonR.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
-	buttonR.TextColor3 = Color3.fromRGB(0, 0, 0)
-end
-
-if AutoReplay == false then
-	buttonR.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-	buttonR.TextColor3 = Color3.fromRGB(255, 255, 255)
-end
-
 buttonR.MouseButton1Click:Connect(function()
 	AutoReplay = not AutoReplay -- Переключаем состояние
 
@@ -435,16 +422,6 @@ end)
 -- auto leave
 local buttonL = ScrollingFrame:FindFirstChild("a3AutoLeave"):FindFirstChild("a3AutoLeaveButton")
 
-if AutoLeave == true then
-	buttonL.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
-	buttonL.TextColor3 = Color3.fromRGB(0, 0, 0)
-end
-
-if AutoLeave == false then
-	buttonL.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-	buttonL.TextColor3 = Color3.fromRGB(255, 255, 255)
-end
-
 buttonL.MouseButton1Click:Connect(function()
 
 	if AutoLeave == true then
@@ -461,16 +438,6 @@ buttonL.MouseButton1Click:Connect(function()
 end)
 -- auto next
 local buttonN = ScrollingFrame:FindFirstChild("a2AutoNext"):FindFirstChild("a2AutoNextButton")
-
-if AutoNext == true then
-	buttonN.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
-	buttonN.TextColor3 = Color3.fromRGB(0, 0, 0)
-end
-
-if AutoNext == false then
-	buttonN.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-	buttonN.TextColor3 = Color3.fromRGB(255, 255, 255)
-end
 
 buttonN.MouseButton1Click:Connect(function()
 
@@ -489,16 +456,6 @@ end)
 -- auto farm
 local buttonF = ScrollingFrame:FindFirstChild("a4AutoFarm"):FindFirstChild("a4AutoFarmButton")
 
-if AutoFarm == true then
-	buttonF.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
-	buttonF.TextColor3 = Color3.fromRGB(0, 0, 0)
-end
-
-if AutoFarm == false then
-	buttonF.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-	buttonF.TextColor3 = Color3.fromRGB(255, 255, 255)
-end
-
 buttonF.MouseButton1Click:Connect(function()
 
 	if AutoFarm == true then
@@ -516,16 +473,6 @@ end)
 -- auto banner
 local buttonB = ScrollingFrame:FindFirstChild("a5AutoBanner"):FindFirstChild("a5AutoBannerButton")
 
-if AutoBanner == true then
-	buttonB.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
-	buttonB.TextColor3 = Color3.fromRGB(0, 0, 0)
-end
-
-if AutoBanner == false then
-	buttonB.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
-	buttonB.TextColor3 = Color3.fromRGB(255, 255, 255)
-end
-
 buttonB.MouseButton1Click:Connect(function()
 
 	if AutoBanner == true then
@@ -539,4 +486,11 @@ buttonB.MouseButton1Click:Connect(function()
 			AutoBanner = true
 		end
 	end
+end)
+
+-- closebutton
+local Closebutton = ScreenGui.BackGround.MovieButton:FindFirstChild("CloseButton")
+Closebutton.MouseButton1Click:Connect(function()
+	ScreenGui:Destroy()
+	saveConfig()
 end)
