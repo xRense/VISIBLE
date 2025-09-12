@@ -241,11 +241,11 @@ local function loadConfig()
 
 			if success2 and decoded then
 				-- Загружаем значения в глобальные переменные
-				AutoReplay = decoded.AutoReplay or false
-				AutoNext = decoded.AutoNext or false
-				AutoLeave = decoded.AutoLeave or false
-				AutoFarm = decoded.AutoFarm or false
-				AutoBanner = decoded.AutoBanner or false
+				AutoReplay = decoded.AutoReplay
+				AutoNext = decoded.AutoNext
+				AutoLeave = decoded.AutoLeave
+				AutoFarm = decoded.AutoFarm
+				AutoBanner = decoded.AutoBanner
 
 				print("Config loaded successful")
 				return true
