@@ -227,6 +227,79 @@ end
 makefolder("KLConfig")
 makefolder("KLConfig/Config")
 
+-- Функция для обновления визуального состояния всех кнопок
+local function updateButtonsVisual()
+	-- AutoReplay
+	local buttonR = ScrollingFrame:FindFirstChild("a1AutoReplay"):FindFirstChild("a1AutoReplayButton")
+	if buttonR then
+		if AutoReplay == true then
+			buttonR.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+			buttonR.TextColor3 = Color3.fromRGB(0, 0, 0)
+			buttonR.Text = "ON"
+		else
+			buttonR.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+			buttonR.TextColor3 = Color3.fromRGB(255, 255, 255)
+			buttonR.Text = "OFF"
+		end
+	end
+
+	-- AutoNext
+	local buttonN = ScrollingFrame:FindFirstChild("a2AutoNext"):FindFirstChild("a2AutoNextButton")
+	if buttonN then
+		if AutoNext == true then
+			buttonN.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+			buttonN.TextColor3 = Color3.fromRGB(0, 0, 0)
+			buttonN.Text = "ON"
+		else
+			buttonN.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+			buttonN.TextColor3 = Color3.fromRGB(255, 255, 255)
+			buttonN.Text = "OFF"
+		end
+	end
+
+	-- AutoLeave
+	local buttonL = ScrollingFrame:FindFirstChild("a3AutoLeave"):FindFirstChild("a3AutoLeaveButton")
+	if buttonL then
+		if AutoLeave == true then
+			buttonL.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+			buttonL.TextColor3 = Color3.fromRGB(0, 0, 0)
+			buttonL.Text = "ON"
+		else
+			buttonL.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+			buttonL.TextColor3 = Color3.fromRGB(255, 255, 255)
+			buttonL.Text = "OFF"
+		end
+	end
+
+	-- AutoFarm
+	local buttonF = ScrollingFrame:FindFirstChild("a4AutoFarm"):FindFirstChild("a4AutoFarmButton")
+	if buttonF then
+		if AutoFarm == true then
+			buttonF.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+			buttonF.TextColor3 = Color3.fromRGB(0, 0, 0)
+			buttonF.Text = "ON"
+		else
+			buttonF.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+			buttonF.TextColor3 = Color3.fromRGB(255, 255, 255)
+			buttonF.Text = "OFF"
+		end
+	end
+
+	-- AutoBanner
+	local buttonB = ScrollingFrame:FindFirstChild("a5AutoBanner"):FindFirstChild("a5AutoBannerButton")
+	if buttonB then
+		if AutoBanner == true then
+			buttonB.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+			buttonB.TextColor3 = Color3.fromRGB(0, 0, 0)
+			buttonB.Text = "ON"
+		else
+			buttonB.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+			buttonB.TextColor3 = Color3.fromRGB(255, 255, 255)
+			buttonB.Text = "OFF"
+		end
+	end
+end
+
 -- Функция загрузки конфига
 local function loadConfig()
 	if isfile("KLConfig/Config/config.json") then
@@ -241,13 +314,17 @@ local function loadConfig()
 
 			if success2 and decoded then
 				-- Загружаем значения в глобальные переменные
-				AutoReplay = decoded.AutoReplay
-				AutoNext = decoded.AutoNext
-				AutoLeave = decoded.AutoLeave
-				AutoFarm = decoded.AutoFarm
-				AutoBanner = decoded.AutoBanner
+				AutoReplay = decoded.AutoReplay or false
+				AutoNext = decoded.AutoNext or false
+				AutoLeave = decoded.AutoLeave or false
+				AutoFarm = decoded.AutoFarm or false
+				AutoBanner = decoded.AutoBanner or false
 
 				print("Config loaded successful")
+
+				-- ОБНОВЛЯЕМ ВИЗУАЛ КНОПОК ПОСЛЕ ЗАГРУЗКИ
+				updateButtonsVisual()
+
 				return true
 			end
 		end
@@ -287,6 +364,9 @@ end
 
 -- Загружаем конфиг при старте
 loadConfig()
+
+task.wait(1) -- Небольшая задержка для загрузки интерфейса
+updateButtonsVisual()
 
 -- Сохраняем при выходе из игры
 game:GetService("Players").PlayerRemoving:Connect(function(player)
@@ -329,17 +409,16 @@ if AutoReplay == false then
 end
 
 buttonR.MouseButton1Click:Connect(function()
+	AutoReplay = not AutoReplay -- Переключаем состояние
 
-	if AutoReplay == true then
+	if AutoReplay then
+		buttonR.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
+		buttonR.TextColor3 = Color3.fromRGB(0, 0, 0)
+		buttonR.Text = "ON"
+	else
 		buttonR.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
 		buttonR.TextColor3 = Color3.fromRGB(255, 255, 255)
-		AutoReplay = false
-	else
-		if AutoReplay == false then
-			buttonR.BackgroundColor3 = Color3.fromRGB(85, 255, 127)
-			buttonR.TextColor3 = Color3.fromRGB(0, 0, 0)
-			AutoReplay = true
-		end
+		buttonR.Text = "OFF"
 	end
 end)
 
