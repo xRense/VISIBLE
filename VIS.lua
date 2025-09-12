@@ -489,7 +489,7 @@ buttonB.MouseButton1Click:Connect(function()
 end)
 
 -- closebutton
-local Closebutton = ScreenGui.BackGround.MovieButton:FindFirstChild("CloseButton")
+local Closebutton = ScreenGui:FindFirstChild("BackGround"):FindFirstChild("MovieFrame"):FindFirstChild("CloseButton")
 Closebutton.MouseButton1Click:Connect(function()
 	ScreenGui:Destroy()
 	saveConfig()
